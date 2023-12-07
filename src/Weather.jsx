@@ -36,6 +36,11 @@ export default function WeatherApp() {
               },1000)
         }
     }
+    const handlesearch = (e) => {
+        if (e.key === 'Enter'){
+            getweather();
+        }
+    }
     return(
         <div className='cover'>
             <Container style={{paddingBottom:'100px',
@@ -55,7 +60,8 @@ export default function WeatherApp() {
                 >
                     <TextField id='outlined-basic' label='Enter City name' variant='outlined' name='city' 
                         inputProps={{style:{color:'white',borderColor:'white'}}}
-                        InputLabelProps={{style:{color:'white'}}} />
+                        InputLabelProps={{style:{color:'white'}}}
+                        onKeyDown={handlesearch} />
                     <Button style={{padding:'8px', color:'white'}}
                         onClick={getweather}
                     >

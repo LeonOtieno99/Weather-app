@@ -2,46 +2,40 @@ import * as React from 'react';
 import { AppBar, Box, Button, Container, TextField, Toolbar, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function WeatherApp() {   
+export default function WeatherApp() {  
 
-    const getweather = async () => {
-        try {
-          const cityInput = document.getElementsByName('city')[0];
-          const city = cityInput.value;
-          var res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=9976448f19a759b98f26c70a0279b43f&units=metric`);
-          var data = await res.json();
-
-          document.querySelector('.err').innerHTML = "";
-      
-          if (data.cod === "404") {
-            
-            document.querySelector('.icon').innerHTML = '';
+     const getweather = async () => {    
+        try{
+            const cityInput = document.getElementsByName('city')[0];
+            const city = cityInput.value;
+            var res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=9976448f19a759b98f26c70a0279b43f&units=metric`);
+            var data = await res.json();
+            document.querySelector('.celsius').innerHTML = 'Temperature: '+data.main.temp + '°C';
+            document.querySelector('.city').innerHTML = data.name;
+            document.querySelector('.humidity').innerHTML = 'Humidity: ' + data.main.humidity + '%';
+            document.querySelector('.wind').innerHTML = 'Wind Speed: '+data.wind.speed + 'km/h';
+            document.querySelector('.country').innerHTML = 'Country: '+ data.sys.country;
+            let icon = data.weather[0].icon;
+            document.querySelector('.icon img').setAttribute('src', `http://openweathermap.org/img/w/${icon}.png`);
+            document.querySelector('.main').innerHTML = 'Weather: '+ data.weather[0].main;
+            document.querySelector('.desc').innerHTML ='Description: ' + data.weather[0].description;
+            document.querySelector('.err').innerHTML = " "
+        }
+        catch(err){
+            document.querySelector('.icon').innerHTML = ' ';
             document.querySelector('.celsius').innerHTML = 'Temperature: ';
-            document.querySelector('.city').innerHTML = '';
+            document.querySelector('.city').innerHTML = ' ';
             document.querySelector('.humidity').innerHTML = 'Humidity: ';
             document.querySelector('.wind').innerHTML = 'Wind Speed: ';
             document.querySelector('.country').innerHTML = 'Country: ';
             document.querySelector('.main').innerHTML = 'Weather: ';
-            document.querySelector('.desc').innerHTML = 'Description: ';
-            document.querySelector('.err').innerHTML = "ERROR: City not found";
-          } else {
-
-            document.querySelector('.icon img').setAttribute('src', `http://openweathermap.org/img/w/${data.weather[0].icon}.png`);
-            document.querySelector('.celsius').innerHTML = 'Temperature: ' + data.main.temp + '°C';
-            document.querySelector('.city').innerHTML = data.name;
-            document.querySelector('.humidity').innerHTML = 'Humidity: ' + data.main.humidity + '%';
-            document.querySelector('.wind').innerHTML = 'Wind Speed: ' + data.wind.speed + 'km/h';
-            document.querySelector('.country').innerHTML = 'Country: ' + data.sys.country;
-            document.querySelector('.main').innerHTML = 'Weather: ' + data.weather[0].main;
-            document.querySelector('.desc').innerHTML = 'Description: ' + data.weather[0].description;
-          }
-        } catch (err) {
-          console.error(err);
-          document.querySelector('.err').innerHTML = "ERROR: Unable to fetch data";
+            document.querySelector('.desc').innerHTML ='Description: ';
+            document.querySelector('.err').innerHTML = "City not found";
+            setTimeout(function(){
+                window.location.reload();
+              },1000)
         }
-      };
-      
-  
+    }
     return(
         <div className='cover'>
             <Container style={{paddingBottom:'100px',

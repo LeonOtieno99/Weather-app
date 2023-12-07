@@ -38,6 +38,7 @@ export default function WeatherApp() {
     }
     const handlesearch = (e) => {
         if (e.key === 'Enter'){
+            e.preventDefault();
             getweather();
         }
     }
